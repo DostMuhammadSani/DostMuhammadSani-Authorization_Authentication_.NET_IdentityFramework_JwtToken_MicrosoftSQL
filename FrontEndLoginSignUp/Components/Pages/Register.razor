@@ -1,0 +1,126 @@
+﻿@page "/"
+@using System.Net.Http.Headers
+@using ClassLibraryModel
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+@inject IHttpClientFactory HttpClientFactory
+@rendermode InteractiveServer
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<h3>Register</h3>
+
+<EditForm Model="person" OnValidSubmit="HandleRegister">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <InputText id="name" class="form-control" @bind-Value="person.Name" />
+    </div>
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <InputText id="email" class="form-control" @bind-Value="person.Email" />
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone:</label>
+        <InputText id="phone" class="form-control" type="text" @bind-Value="person.Phone" />
+    </div>
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <InputText id="password" class="form-control" type="password" @bind-Value="person.Password" />
+    </div>
+    <div class="form-group">
+        <label for="role">Role:</label>
+        <InputSelect id="role" class="form-control" @bind-Value="selectedRole">
+            <option value="User">User</option>
+            <option value="Admin">Admin</option>
+     
+        </InputSelect>
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+</EditForm>
+
+@code {
+    public PersonModel person = new PersonModel();
+    private string selectedRole = "User";
+
+    private async Task HandleRegister()
+    {
+        Guid Id = Guid.NewGuid();
+        person.Id = Id.ToString();
+        var client = HttpClientFactory.CreateClient("AuthApi");
+        var response = await client.PostAsJsonAsync("api/Auth/register", new { person, selectedRole });
+        var response1 = await client.PostAsJsonAsync("api/Person", person);
+        if (response.IsSuccessStatusCode)
+        {
+            Navigation.NavigateTo("/login");
+        }
+        else
+        {
+            // Handle errors appropriately
+            var error = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"Error: {error}");
+        }
+    }
+}
+
+
+
+<style>
+    body {
+        font-family: 'Georgia', serif;
+        background-color: #e0f2f1; /* Soft mint green */
+        color: #263238; /* Dark grey-blue */
+    }
+
+    h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #004d40; /* Deep teal */
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #004d40; /* Deep teal */
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #004d40; /* Deep teal border */
+        border-radius: 6px;
+        background-color: #ffffff; /* White */
+        color: #263238; /* Dark grey-blue */
+    }
+
+    .btn-primary {
+        display: block;
+        width: auto; /* Adjust width to fit content */
+        max-width: 200px; /* Set a max width */
+        padding: 12px 20px;
+        background-color: #00796b; /* Teal */
+        border: none;
+        border-radius: 6px;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 auto; /* Center button horizontally */
+    }
+
+    .btn-primary:hover {
+        background-color: #004d40; /* Darker teal */
+    }
+
+    .form-group > .form-control {
+        margin-top: 10px;
+    }
+</style>

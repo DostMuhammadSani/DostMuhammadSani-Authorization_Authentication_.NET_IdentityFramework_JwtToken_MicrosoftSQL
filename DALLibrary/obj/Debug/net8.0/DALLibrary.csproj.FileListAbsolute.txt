@@ -1,0 +1,15 @@
+D:\SummerSchool\Careaho\DALLibrary\bin\Debug\net8.0\DALLibrary.deps.json
+D:\SummerSchool\Careaho\DALLibrary\bin\Debug\net8.0\DALLibrary.dll
+D:\SummerSchool\Careaho\DALLibrary\bin\Debug\net8.0\DALLibrary.pdb
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.csproj.AssemblyReference.cache
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.GeneratedMSBuildEditorConfig.editorconfig
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.AssemblyInfoInputs.cache
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.AssemblyInfo.cs
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.csproj.CoreCompileInputs.cache
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.dll
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\refint\DALLibrary.dll
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.pdb
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\ref\DALLibrary.dll
+D:\SummerSchool\Careaho\DALLibrary\bin\Debug\net8.0\ClassLibraryModel.dll
+D:\SummerSchool\Careaho\DALLibrary\bin\Debug\net8.0\ClassLibraryModel.pdb
+D:\SummerSchool\Careaho\DALLibrary\obj\Debug\net8.0\DALLibrary.csproj.CopyComplete

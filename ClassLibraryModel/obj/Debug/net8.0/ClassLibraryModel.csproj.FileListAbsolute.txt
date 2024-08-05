@@ -1,0 +1,11 @@
+D:\SummerSchool\Careaho\ClassLibraryModel\bin\Debug\net8.0\ClassLibraryModel.deps.json
+D:\SummerSchool\Careaho\ClassLibraryModel\bin\Debug\net8.0\ClassLibraryModel.dll
+D:\SummerSchool\Careaho\ClassLibraryModel\bin\Debug\net8.0\ClassLibraryModel.pdb
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.GeneratedMSBuildEditorConfig.editorconfig
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.AssemblyInfoInputs.cache
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.AssemblyInfo.cs
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.csproj.CoreCompileInputs.cache
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.dll
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\refint\ClassLibraryModel.dll
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ClassLibraryModel.pdb
+D:\SummerSchool\Careaho\ClassLibraryModel\obj\Debug\net8.0\ref\ClassLibraryModel.dll
