@@ -1,0 +1,65 @@
+﻿@page "/addmenu"
+@using System.ComponentModel.DataAnnotations
+
+<h3>Add Menu</h3>
+
+<EditForm Model="@menu" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Menu Item Name</label>
+        <InputText id="name" class="form-control" @bind-Value="menu.Name" />
+        <ValidationMessage For="@(() => menu.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <InputText id="description" class="form-control" @bind-Value="menu.Description" />
+        <ValidationMessage For="@(() => menu.Description)" />
+    </div>
+
+    <div class="form-group">
+        <label for="price">Price</label>
+        <InputNumber id="price" class="form-control" @bind-Value="menu.Price" />
+        <ValidationMessage For="@(() => menu.Price)" />
+    </div>
+
+    <div class="form-group">
+        <label for="branch">Branch</label>
+        <InputText id="branch" class="form-control" @bind-Value="menu.Branch" />
+        <ValidationMessage For="@(() => menu.Branch)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Menu</button>
+</EditForm>
+
+@code {
+    private Menu menu = new Menu();
+
+    private void HandleValidSubmit()
+    {
+        // Handle form submission
+        // e.g., send data to a server
+        Console.WriteLine($"Menu Item Name: {menu.Name}");
+        Console.WriteLine($"Description: {menu.Description}");
+        Console.WriteLine($"Price: {menu.Price}");
+        Console.WriteLine($"Branch: {menu.Branch}");
+    }
+
+    public class Menu
+    {
+        [Required(ErrorMessage = "Menu Item Name is required.")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Description is required.")]
+        public string Description { get; set; }
+
+        [Required(ErrorMessage = "Price is required.")]
+        [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero.")]
+        public decimal Price { get; set; }
+
+        [Required(ErrorMessage = "Branch is required.")]
+        public string Branch { get; set; }
+    }
+}

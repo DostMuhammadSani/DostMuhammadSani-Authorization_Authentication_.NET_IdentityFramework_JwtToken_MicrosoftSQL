@@ -1,8 +1,65 @@
-﻿@page "/h"
+﻿@page "/"
+@using Microsoft.AspNetCore.Components
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
 
-<PageTitle>Home</PageTitle>
+<div class="welcome-container">
+    <div class="welcome-card">
+        <h1>Welcome to Caraeho App</h1>
+        <p>Your journey to seamless management starts here.</p>
+        <button @onclick="NavigateToLogin">Enter as Vendor</button>
+    </div>
+</div>
 
-<h1>Hello, world!</h1>
-<InputText PlaceHolder="Enter Search"></InputText>
+<style>
+    .welcome-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f2f5;
+        margin: 0;
+    }
 
-Welcome to your new app.
+    .welcome-card {
+        background-color: #ffffff;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .welcome-card h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #333;
+    }
+
+    .welcome-card p {
+        font-size: 1.25rem;
+        margin-bottom: 2rem;
+        color: #666;
+    }
+
+    .welcome-card button {
+        font-size: 1.25rem;
+        padding: 0.75rem 1.5rem;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .welcome-card button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+@code {
+    private void NavigateToLogin()
+    {
+        Navigation.NavigateTo("/login");
+    }
+}

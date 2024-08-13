@@ -1,0 +1,58 @@
+﻿
+@rendermode InteractiveServer
+<h3>List of Restaurant Branches</h3>
+
+@if (branches == null || !branches.Any())
+{
+        <p>No branches available.</p>
+}
+else
+{
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Branch Name</th>
+                    <th>Address</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var branch in branches)
+            {
+                        <tr>
+                            <td>@branch.Name</td>
+                            <td>@branch.Address</td>
+                            <td>@branch.PhoneNumber</td>
+                            <td>@branch.Email</td>
+                            <td>
+                                <NavLink class="btn btn-primary" href="/addmenu">Update Menu</NavLink>
+                            </td>
+                        </tr>
+            }
+            </tbody>
+        </table>
+}
+
+@code {
+    private List<Branch> branches;
+
+    protected override void OnInitialized()
+    {
+        // Sample data. Replace with actual data retrieval logic.
+        branches = new List<Branch>
+        {
+            new Branch { Name = "Branch 1", Address = "123 Main St", PhoneNumber = "555-1234", Email = "branch1@example.com" },
+            new Branch { Name = "Branch 2", Address = "456 Elm St", PhoneNumber = "555-5678", Email = "branch2@example.com" }
+        };
+    }
+
+    public class Branch
+    {
+        public string Name { get; set; }
+        public string Address { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+    }
+}

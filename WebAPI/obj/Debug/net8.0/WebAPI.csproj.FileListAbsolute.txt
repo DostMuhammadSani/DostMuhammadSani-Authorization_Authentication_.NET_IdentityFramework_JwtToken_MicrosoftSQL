@@ -160,3 +160,5 @@ D:\SummerSchool\Careaho\WebAPI\bin\Debug\net8.0\WebAPI.staticwebassets.runtime.j
 D:\SummerSchool\Careaho\WebAPI\bin\Debug\net8.0\Blazored.LocalStorage.dll
 D:\SummerSchool\Careaho\WebAPI\bin\Debug\net8.0\FrontEndLoginSignUp.dll
 D:\SummerSchool\Careaho\WebAPI\bin\Debug\net8.0\FrontEndLoginSignUp.pdb
+D:\SummerSchool\Careaho\WebAPI\obj\Debug\net8.0\WebAPI.sourcelink.json
+D:\SummerSchool\Careaho\WebAPI\bin\Debug\net8.0\Blazored.SessionStorage.dll

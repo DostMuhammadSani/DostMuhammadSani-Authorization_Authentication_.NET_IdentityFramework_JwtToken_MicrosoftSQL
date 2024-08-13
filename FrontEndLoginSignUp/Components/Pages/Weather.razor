@@ -1,30 +1,42 @@
-﻿@page "/weather"
-@attribute [StreamRendering]
+﻿@page "/branch"
+@using Microsoft.AspNetCore.Components.Authorization
+@inject NavigationManager Navigation
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+@using Blazored.SessionStorage
+@inject ISessionStorageService SessionStorage
 
-<PageTitle>Weather</PageTitle>
+@using System.Text.Json
+@using System.Security.Claims
+@if (role=="Admin" )
+{
+        <AddBranch></AddBranch>
+        <ShowBranch></ShowBranch>
+}
 
-<h1>Weather</h1>
-
-<p>This component demonstrates showing data.</p>
-<ShowData ShowDataForecasts="forecasts"></ShowData>
 
 @code {
-    private ClassLibraryModel.ModelWeather[]? forecasts;
-
-    protected override async Task OnInitializedAsync()
+    private string token;
+    public string role;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new ClassLibraryModel.ModelWeather
+        if (firstRender)
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+            try
+            {
+                token = await SessionStorage.GetItemAsync<string>("authToken");
+                var claims = RoleFetch.ParseClaimsFromJwt(token);
+                var roleClaim = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+                role = roleClaim.Value;
+                StateHasChanged(); // Request a re-render to update the UI if needed
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions as needed
+                Console.WriteLine($"Error retrieving token: {ex.Message}");
+            }
+        }
     }
-
-   
+    
 }

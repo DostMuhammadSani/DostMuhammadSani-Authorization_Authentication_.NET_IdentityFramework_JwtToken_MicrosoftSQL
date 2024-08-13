@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "NxRJL9jxZe+ghMB/unRX2L+nhPngYeKkZVImisNXL5KS1B7k1Wp0VoqYQzGE93TFMGHDl3JLI3Gq+9jlTv6vsw==",
+  "dgSpecHash": "hOPXfYdZwjXJbMvir7yyKSlL9T9zwj69xqzqkH0mEGzB9ljJTGY5+5yU6XHFvwxmqC2QziQe+wIJDrBXpboUhw==",
   "success": true,
   "projectFilePath": "D:\\SummerSchool\\Careaho\\FrontEndLoginSignUp\\FrontEndLoginSignUp.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Saif\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
+    "C:\\Users\\Saif\\.nuget\\packages\\blazored.sessionstorage\\2.4.0\\blazored.sessionstorage.2.4.0.nupkg.sha512",
     "C:\\Users\\Saif\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.0\\microsoft.aspnetcore.authorization.8.0.0.nupkg.sha512",
     "C:\\Users\\Saif\\.nuget\\packages\\microsoft.aspnetcore.components\\8.0.0\\microsoft.aspnetcore.components.8.0.0.nupkg.sha512",
     "C:\\Users\\Saif\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\8.0.0\\microsoft.aspnetcore.components.analyzers.8.0.0.nupkg.sha512",

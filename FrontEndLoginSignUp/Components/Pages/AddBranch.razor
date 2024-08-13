@@ -1,0 +1,67 @@
+﻿@page "/branchform"
+@rendermode InteractiveServer
+@using System.ComponentModel.DataAnnotations
+
+<h3>Restaurant Branch Details</h3>
+
+<EditForm Model="@branch" FormName="AddBranch" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="name">Branch Name</label>
+        <InputText id="name" class="form-control" @bind-Value="branch.Name" />
+        <ValidationMessage For="@(() => branch.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label for="address">Address</label>
+        <InputText id="address" class="form-control" @bind-Value="branch.Address" />
+        <ValidationMessage For="@(() => branch.Address)" />
+    </div>
+
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <InputText id="phone" class="form-control" @bind-Value="branch.PhoneNumber" />
+        <ValidationMessage For="@(() => branch.PhoneNumber)" />
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <InputText id="email" class="form-control" @bind-Value="branch.Email" />
+        <ValidationMessage For="@(() => branch.Email)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+
+@code {
+    private Branch branch = new Branch();
+
+    private void HandleValidSubmit()
+    {
+        // Handle the form submission
+        // e.g., send data to a server, show a confirmation message, etc.
+        Console.WriteLine($"Branch Name: {branch.Name}");
+        Console.WriteLine($"Address: {branch.Address}");
+        Console.WriteLine($"Phone Number: {branch.PhoneNumber}");
+        Console.WriteLine($"Email: {branch.Email}");
+    }
+
+    public class Branch
+    {
+        [Required(ErrorMessage = "Branch Name is required.")]
+        public string Name { get; set; }
+
+        [Required(ErrorMessage = "Address is required.")]
+        public string Address { get; set; }
+
+        [Required(ErrorMessage = "Phone Number is required.")]
+        [Phone(ErrorMessage = "Invalid phone number.")]
+        public string PhoneNumber { get; set; }
+
+        [Required(ErrorMessage = "Email is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        public string Email { get; set; }
+    }
+}

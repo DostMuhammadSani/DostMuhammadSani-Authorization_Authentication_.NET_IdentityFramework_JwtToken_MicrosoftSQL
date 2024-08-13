@@ -31,3 +31,5 @@ D:\SummerSchool\Careaho\FrontEndLoginSignUp\obj\Debug\net8.0\FrontEndLoginSignUp
 D:\SummerSchool\Careaho\FrontEndLoginSignUp\obj\Debug\net8.0\FrontEndLoginSignUp.genruntimeconfig.cache
 D:\SummerSchool\Careaho\FrontEndLoginSignUp\obj\Debug\net8.0\ref\FrontEndLoginSignUp.dll
 D:\SummerSchool\Careaho\FrontEndLoginSignUp\bin\Debug\net8.0\Blazored.LocalStorage.dll
+D:\SummerSchool\Careaho\FrontEndLoginSignUp\obj\Debug\net8.0\FrontEndLoginSignUp.sourcelink.json
+D:\SummerSchool\Careaho\FrontEndLoginSignUp\bin\Debug\net8.0\Blazored.SessionStorage.dll

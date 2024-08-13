@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/register"
 @using System.Net.Http.Headers
 @using ClassLibraryModel
 @using Microsoft.AspNetCore.Components.Authorization
@@ -34,37 +34,47 @@
         <InputSelect id="role" class="form-control" @bind-Value="selectedRole">
             <option value="User">User</option>
             <option value="Admin">Admin</option>
-     
         </InputSelect>
     </div>
     <button type="submit" class="btn btn-primary">Register</button>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+            <div class="alert alert-danger mt-3">@errorMessage</div>
+    }
 </EditForm>
 
 @code {
     public PersonModel person = new PersonModel();
     private string selectedRole = "User";
+    private string errorMessage = string.Empty;
 
     private async Task HandleRegister()
     {
-        Guid Id = Guid.NewGuid();
-        person.Id = Id.ToString();
-        var client = HttpClientFactory.CreateClient("AuthApi");
-        var response = await client.PostAsJsonAsync("api/Auth/register", new { person, selectedRole });
-        var response1 = await client.PostAsJsonAsync("api/Person", person);
-        if (response.IsSuccessStatusCode)
+        try
         {
-            Navigation.NavigateTo("/login");
+            Guid Id = Guid.NewGuid();
+            person.Id = Id.ToString();
+            var client = HttpClientFactory.CreateClient("AuthApi");
+            var response = await client.PostAsJsonAsync("api/Auth/register", new { person, selectedRole });
+            var response1 = await client.PostAsJsonAsync("api/Person", person);
+
+            if (response.IsSuccessStatusCode && response1.IsSuccessStatusCode)
+            {
+                Navigation.NavigateTo("/login");
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Registration failed: {error}";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Handle errors appropriately
-            var error = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Error: {error}");
+            errorMessage = $"An error occurred: {ex.Message}";
         }
     }
 }
-
-
 
 <style>
     body {
@@ -122,5 +132,20 @@
 
     .form-group > .form-control {
         margin-top: 10px;
+    }
+
+    .alert {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        text-align: center;
+    }
+
+    .alert-danger {
+        color: #a94442;
+        background-color: #f2dede;
+        border-color: #ebccd1;
     }
 </style>

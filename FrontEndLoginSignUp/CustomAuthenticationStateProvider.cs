@@ -1,75 +1,61 @@
-﻿using Blazored.LocalStorage;
+﻿using FrontEndLoginSignUp;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.JSInterop;
 using System.Security.Claims;
 using System.Text.Json;
 
 public class CustomAuthenticationStateProvider : AuthenticationStateProvider
 {
-    private readonly ILocalStorageService _localStorage;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private readonly IJSRuntime _jsRuntime;
-    private bool IsPrerendering => _jsRuntime is IJSInProcessRuntime;
-
-    public CustomAuthenticationStateProvider(ILocalStorageService localStorage, IJSRuntime jsRuntime)
+    public CustomAuthenticationStateProvider(IHttpContextAccessor httpContextAccessor)
     {
-        _localStorage = localStorage;
-        _jsRuntime = jsRuntime;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        var token = await GetTokenAsync();
+        var httpContext = _httpContextAccessor.HttpContext;
+        var userId = httpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+        }
+
+        var token = TokenStore.GetToken(userId);
+
         var identity = string.IsNullOrEmpty(token) ? new ClaimsIdentity() : new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
         var user = new ClaimsPrincipal(identity);
 
         return new AuthenticationState(user);
     }
 
-    public async Task MarkUserAsAuthenticated(string token)
+    public void MarkUserAsAuthenticated(string userId, string token)
     {
-        await SetTokenAsync(token);
-        var authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt"))));
-        NotifyAuthenticationStateChanged(authState);
+        // Store the token in the server-side store
+        TokenStore.AddToken(userId, token);
+
+        var authState = new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt")));
+        NotifyAuthenticationStateChanged(Task.FromResult(authState));
     }
 
-    public async Task MarkUserAsLoggedOut()
+    public void MarkUserAsLoggedOut(string userId)
     {
-        await RemoveTokenAsync();
+        TokenStore.RemoveToken(userId);
         var authState = Task.FromResult(new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity())));
         NotifyAuthenticationStateChanged(authState);
     }
 
     public async Task<string> GetTokenAsync()
     {
-        if (IsPrerendering)
-        {
-            return null; // Or handle appropriately for prerendering
-        }
-
-        try
-        {
-            return await _localStorage.GetItemAsync<string>("authToken");
-        }
-        catch (Exception ex)
-        {
-            // Handle exceptions or log errors
-            Console.WriteLine($"Exception: {ex.Message}");
-            return null;
-        }
+        var httpContext = _httpContextAccessor.HttpContext;
+        var userId = httpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return userId == null ? null : TokenStore.GetToken(userId);
     }
 
-    private async Task SetTokenAsync(string token)
-    {
-        await _localStorage.SetItemAsync("authToken", token);
-    }
 
-    private async Task RemoveTokenAsync()
-    {
-        await _localStorage.RemoveItemAsync("authToken");
-    }
 
-    private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
+private IEnumerable<Claim> ParseClaimsFromJwt(string jwt)
     {
         var payload = jwt.Split('.')[1];
         var jsonBytes = ParseBase64WithoutPadding(payload);

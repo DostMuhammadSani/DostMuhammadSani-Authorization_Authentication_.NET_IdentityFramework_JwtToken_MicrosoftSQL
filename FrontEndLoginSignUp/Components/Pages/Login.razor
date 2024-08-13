@@ -4,11 +4,12 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using System.Text.Json
 @using System.Security.Claims
-@rendermode InteractiveServer
 @inject NavigationManager Navigation
 @inject IHttpClientFactory HttpClientFactory
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject IJSRuntime JSRuntime
+@rendermode InteractiveServer
+@using Blazored.SessionStorage
+@inject ISessionStorageService SessionStorage
 
 <h3>Login</h3>
 
@@ -25,30 +26,45 @@
         <InputText id="password" class="form-control" type="password" @bind-Value="loginModel.Password" />
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
+    <a href="/register">If you don't have an account, Register!</a>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+            <div class="alert alert-danger mt-3">@errorMessage</div>
+    }
 </EditForm>
 
 @code {
-    public HttpClient? client { get; set; }
-    public HttpResponseMessage? response { get; set; }
+    private HttpClient? client;
+    private HttpResponseMessage? response;
     private LoginModel loginModel = new LoginModel();
+    private string errorMessage = string.Empty;
+    private string? Token;
 
     private async Task HandleLogin()
     {
-        client = HttpClientFactory.CreateClient("AuthApi");
-        response = await client.PostAsJsonAsync("api/Auth/login", loginModel);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            var jwtResponse = await response.Content.ReadFromJsonAsync<JwtResponse>();
-            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(jwtResponse.Token);
+            client = HttpClientFactory.CreateClient("AuthApi");
+            response = await client.PostAsJsonAsync("api/Auth/login", loginModel);
 
-            // Navigate based on the user's role
-            NavigateBasedOnRole(jwtResponse.Token);
+            if (response.IsSuccessStatusCode)
+            {
+                var jwtResponse = await response.Content.ReadFromJsonAsync<JwtResponse>();
+                ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email, jwtResponse.Token);
+                Token = jwtResponse.Token;
+                await SessionStorage.SetItemAsync("authToken", Token);
+                NavigateBasedOnRole(jwtResponse.Token);
+            }
+            else
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                errorMessage = $"Login failed: {error}";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            var error = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Error: {error}");
+            errorMessage = $"An error occurred: {ex.Message}";
         }
     }
 
@@ -60,7 +76,7 @@
         {
             if (roleClaim.Value == "Admin")
             {
-                Navigation.NavigateTo("/weather");
+                Navigation.NavigateTo("/branch");
             }
             else if (roleClaim.Value == "User")
             {
@@ -92,58 +108,3 @@
         public string Token { get; set; }
     }
 }
-
-<style>
-    body {
-        font-family: 'Georgia', serif;
-        background-color: #e0f2f1; /* Soft mint green */
-        color: #263238; /* Dark grey-blue */
-    }
-
-    h3 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #004d40; /* Deep teal */
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-        max-width: 400px;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    label {
-        display: block;
-        font-weight: bold;
-        margin-bottom: 8px;
-        color: #004d40; /* Deep teal */
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #004d40; /* Deep teal border */
-        border-radius: 6px;
-        background-color: #ffffff; /* White */
-        color: #263238; /* Dark grey-blue */
-    }
-
-    .btn-primary {
-        display: block;
-        width: auto; /* Adjust width to fit content */
-        max-width: 200px; /* Set a max width */
-        padding: 12px 20px;
-        background-color: #00796b; /* Teal */
-        border: none;
-        border-radius: 6px;
-        color: #ffffff;
-        cursor: pointer;
-        font-size: 16px;
-        margin: 0 auto; /* Center button horizontally */
-    }
-
-    .btn-primary:hover {
-        background-color: #004d40; /* Darker teal */
-    }
-</style>
