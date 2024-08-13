@@ -51,7 +51,6 @@
             if (response.IsSuccessStatusCode)
             {
                 var jwtResponse = await response.Content.ReadFromJsonAsync<JwtResponse>();
-                ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(loginModel.Email, jwtResponse.Token);
                 Token = jwtResponse.Token;
                 await SessionStorage.SetItemAsync("authToken", Token);
                 NavigateBasedOnRole(jwtResponse.Token);
